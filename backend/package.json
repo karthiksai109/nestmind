@@ -1,0 +1,21 @@
+{
+  "name": "nestmind-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Karthik",
+  "license": "ISC",
+  "description": "NestMind backend - AI agents for international students",
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.994.0",
+    "cors": "^2.8.6",
+    "dd-trace": "^5.87.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  }
+}
