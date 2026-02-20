@@ -28,31 +28,25 @@ const STUDENT_DEALS = [
   { name: "Grammarly Premium", price: "FREE", desc: "writing assistant for essays and emails", url: "https://www.grammarly.com/edu", tag: "productivity", free: true },
 ];
 
-function getVideoSearches(uni: string) {
-  const tag = uni.replace(/\s+/g, "");
-  return [
-    { title: `${uni} Campus Tour`, search: `${tag} campus tour`, category: "campus life" },
-    { title: `Day in Life at ${uni}`, search: `${tag} day in my life student`, category: "campus life" },
-    { title: `${uni} Student Life Vlog`, search: `${tag} student life vlog`, category: "campus life" },
-    { title: `${uni} Dorm Room Tour`, search: `${tag} dorm room tour`, category: "campus life" },
-    { title: `${uni} International Students`, search: `${tag} international student experience`, category: "campus life" },
-    { title: `F1 Visa Interview Tips`, search: `F1 visa interview tips international student`, category: "visa" },
-    { title: `OPT Application Guide`, search: `OPT application step by step F1 student`, category: "visa" },
-    { title: `How to Get SSN on F1`, search: `how to get SSN F1 student`, category: "visa" },
-    { title: `CPT vs OPT Explained`, search: `CPT vs OPT explained international student`, category: "visa" },
-    { title: `Food Near ${uni}`, search: `${tag} food restaurants where to eat`, category: "food" },
-    { title: `Cheap Eats for Students`, search: `${tag} cheap food student budget`, category: "food" },
-    { title: `Cooking as a Student`, search: `easy cooking international student USA`, category: "food" },
-    { title: `Grocery Shopping Tips`, search: `grocery shopping USA international student budget`, category: "food" },
-    { title: `Housing Near ${uni}`, search: `${tag} off campus housing apartments`, category: "housing" },
-    { title: `${uni} Apartment Hunt`, search: `${tag} apartment tour student housing`, category: "housing" },
-    { title: `Study Tips for College`, search: `study tips college GPA international student`, category: "academics" },
-    { title: `How to Talk to Professors`, search: `how to email professor college tips`, category: "academics" },
-    { title: `Building Credit in USA`, search: `build credit score international student USA`, category: "daily life" },
-    { title: `Best Phone Plans`, search: `best phone plan international student USA`, category: "daily life" },
-    { title: `Opening a Bank Account`, search: `open bank account international student USA`, category: "daily life" },
-  ];
-}
+const CAMPUS_VIDEOS = [
+  { title: "University of Dayton Campus Tour", id: "GZuzO8DcElk", category: "campus life" },
+  { title: "University of Dayton - Tour from Inside", id: "aD_AbYMEYW8", category: "campus life" },
+  { title: "University of Dayton Campus", id: "RgMBdVvqswM", category: "campus life" },
+  { title: "How to Get SSN as International Student (F1)", id: "TwUDJECDFJU", category: "visa" },
+  { title: "SSN for International Students on F1 Visa", id: "yY8NyRbhiY0", category: "visa" },
+  { title: "How to Apply for OPT - Complete Guide", id: "Dy961IIi1kc", category: "visa" },
+  { title: "OPT for F1 Students Explained", id: "b_cGBSjcHJY", category: "visa" },
+  { title: "How to Apply for OPT Online - Step by Step", id: "CmboasUaVRc", category: "visa" },
+  { title: "Meal Prep as International Student on Budget", id: "9g6J18BcGW0", category: "food" },
+  { title: "Meals So Easy a College Student Could Make It", id: "S-TmmjEN-V0", category: "food" },
+  { title: "Budget Meals and Hacks for Students", id: "NmdfaVCExcM", category: "food" },
+  { title: "Budget Friendly Meal Prep to Save Money", id: "p3vUmv2IygA", category: "food" },
+  { title: "How to Open US Bank Account (F1/J1 Visa)", id: "-PbzLN-D_9c", category: "daily life" },
+  { title: "Open Bank Account as International Student", id: "Y3y-ToVPlL0", category: "daily life" },
+  { title: "Best Phone Plans for International Students", id: "N5FYrzsOoJY", category: "daily life" },
+  { title: "Best Cell Phone Plans for Students", id: "fhvrFi0YD7A", category: "daily life" },
+  { title: "Build Credit as International Student", id: "52wK0hkClGY", category: "daily life" },
+];
 
 const AGENTS: Record<Agent, { label: string; icon: typeof MessageCircle; color: string; placeholder: string; desc: string }> = {
   buddy: {
@@ -375,24 +369,23 @@ function DealsPanel() {
   );
 }
 
-function VideosPanel({ university }: { university: string }) {
+function VideosPanel() {
   const [filter, setFilter] = useState("all");
-  const allVideos = getVideoSearches(university);
-  const categories = ["all", ...Array.from(new Set(allVideos.map((v) => v.category)))];
-  const filtered = filter === "all" ? allVideos : allVideos.filter((v) => v.category === filter);
+  const categories = ["all", ...Array.from(new Set(CAMPUS_VIDEOS.map((v) => v.category)))];
+  const filtered = filter === "all" ? CAMPUS_VIDEOS : CAMPUS_VIDEOS.filter((v) => v.category === filter);
 
   return (
     <div style={{ padding: 20, overflow: "auto", height: "100%" }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
           <Play size={20} color="#e04040" />
-          <h2 style={{ fontSize: 20, fontWeight: 700 }}>{university} reels and videos</h2>
+          <h2 style={{ fontSize: 20, fontWeight: 700 }}>campus reels and videos</h2>
         </div>
         <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 16, lineHeight: 1.5 }}>
-          search YouTube for real videos about {university}, student life, food, housing, and more.
+          click any video to watch it directly on YouTube.
         </p>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 }}>
-          {categories.map((c: string) => (
+          {categories.map((c) => (
             <button
               key={c}
               onClick={() => setFilter(c)}
@@ -413,10 +406,10 @@ function VideosPanel({ university }: { university: string }) {
           ))}
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14 }}>
-          {filtered.map((video: { title: string; search: string; category: string }, i: number) => (
+          {filtered.map((video, i) => (
             <a
               key={i}
-              href={`https://www.youtube.com/results?search_query=${encodeURIComponent(video.search)}`}
+              href={`https://www.youtube.com/watch?v=${video.id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover-lift"
@@ -430,14 +423,12 @@ function VideosPanel({ university }: { university: string }) {
                 display: "block",
               }}
             >
-              <div style={{
-                paddingTop: "50%",
-                background: "linear-gradient(135deg, #e04040 0%, #c0392b 100%)",
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
+              <div style={{ position: "relative", paddingTop: "56.25%", background: "#000" }}>
+                <img
+                  src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+                  alt={video.title}
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                />
                 <div style={{
                   position: "absolute",
                   top: "50%",
@@ -446,26 +437,13 @@ function VideosPanel({ university }: { university: string }) {
                   width: 50,
                   height: 50,
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.2)",
+                  background: "rgba(224, 64, 64, 0.9)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}>
-                  <Play size={22} color="white" fill="white" />
+                  <Play size={20} color="white" fill="white" />
                 </div>
-                <span style={{
-                  position: "absolute",
-                  bottom: 8,
-                  right: 10,
-                  fontSize: 9,
-                  padding: "2px 8px",
-                  borderRadius: 8,
-                  background: "rgba(0,0,0,0.4)",
-                  color: "white",
-                  fontWeight: 500,
-                }}>
-                  YouTube
-                </span>
               </div>
               <div style={{ padding: "12px 14px" }}>
                 <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4, marginBottom: 6 }}>{video.title}</p>
@@ -892,7 +870,7 @@ export default function NestMindApp() {
         ) : activeAgent === "deals" ? (
           <DealsPanel />
         ) : activeAgent === "videos" ? (
-          <VideosPanel university={profile.university} />
+          <VideosPanel />
         ) : (
           <>
             <div style={{ flex: 1, overflow: "auto", padding: "20px 20px 0" }}>
