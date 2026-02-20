@@ -2,9 +2,9 @@ import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedroc
 
 let _client: BedrockRuntimeClient | null = null;
 
-const BEDROCK_KEY = process.env.AWS_ACCESS_KEY_ID || "";
-const BEDROCK_SECRET = process.env.AWS_SECRET_ACCESS_KEY || "";
-const BEDROCK_REGION = process.env.AWS_REGION || "us-west-2";
+const BEDROCK_KEY = process.env.MY_AWS_KEY || "";
+const BEDROCK_SECRET = process.env.MY_AWS_SECRET || "";
+const BEDROCK_REGION = process.env.MY_AWS_REGION || "us-west-2";
 
 function getClient() {
   if (!_client) {
