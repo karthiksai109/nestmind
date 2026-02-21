@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MapPin, Briefcase, Send, Menu, X, Zap, Activity, MessageCircle, Tag, Sparkles, ExternalLink, Bot, UtensilsCrossed, Play } from "lucide-react";
+import { MapPin, Briefcase, Send, Menu, X, Zap, Activity, MessageCircle, Tag, Sparkles, ExternalLink, Bot, UtensilsCrossed } from "lucide-react";
 import { initDatadog, trackAction, setUser, trackTiming } from "@/lib/datadog";
 
-type Agent = "buddy" | "housing" | "food" | "campus" | "career" | "deals" | "videos" | "tools";
+type Agent = "buddy" | "housing" | "food" | "campus" | "career" | "deals" | "tools";
 type Message = { role: "user" | "agent"; content: string; agent?: Agent; meta?: Record<string, unknown> };
 
 const STUDENT_DEALS = [
@@ -28,26 +28,6 @@ const STUDENT_DEALS = [
   { name: "Grammarly Premium", price: "FREE", desc: "writing assistant for essays and emails", url: "https://www.grammarly.com/edu", tag: "productivity", free: true },
 ];
 
-const VIDEOS = [
-  { title: "How to Get SSN as International Student", id: "TwUDJECDFJU", category: "visa" },
-  { title: "SSN for F1 Visa Students Explained", id: "yY8NyRbhiY0", category: "visa" },
-  { title: "How to Apply for OPT - Complete Guide", id: "Dy961IIi1kc", category: "visa" },
-  { title: "OPT for F1 Students Explained", id: "b_cGBSjcHJY", category: "visa" },
-  { title: "How to Apply for OPT Online Step by Step", id: "CmboasUaVRc", category: "visa" },
-  { title: "F1 Visa Interview Tips", id: "saSX27CLzpw", category: "visa" },
-  { title: "Meal Prep on a Student Budget", id: "9g6J18BcGW0", category: "food" },
-  { title: "Easy Meals Any College Student Can Make", id: "S-TmmjEN-V0", category: "food" },
-  { title: "Budget Meals and Hacks for Students", id: "NmdfaVCExcM", category: "food" },
-  { title: "Budget Friendly Meal Prep", id: "p3vUmv2IygA", category: "food" },
-  { title: "How to Find an Apartment in USA", id: "cGr6CPB7OUA", category: "housing" },
-  { title: "How to Rent as International Student", id: "z1rP5vTkdbA", category: "housing" },
-  { title: "Watch This Before Finding Housing in USA", id: "h-btuCBjShw", category: "housing" },
-  { title: "My USA Apartment Tour as Intl Student", id: "GqMMNEVI0ZU", category: "housing" },
-  { title: "Open US Bank Account (F1/J1 Visa)", id: "-PbzLN-D_9c", category: "daily life" },
-  { title: "How to Open Bank Account in USA", id: "Y3y-ToVPlL0", category: "daily life" },
-  { title: "Best Phone Plans for Intl Students", id: "N5FYrzsOoJY", category: "daily life" },
-  { title: "Build Credit as International Student", id: "52wK0hkClGY", category: "daily life" },
-];
 
 const AGENTS: Record<Agent, { label: string; icon: typeof MessageCircle; color: string; placeholder: string; desc: string }> = {
   buddy: {
@@ -91,13 +71,6 @@ const AGENTS: Record<Agent, { label: string; icon: typeof MessageCircle; color: 
     color: "#d94f8a",
     placeholder: "",
     desc: "click and claim student discounts",
-  },
-  videos: {
-    label: "Reels",
-    icon: Play,
-    color: "#e04040",
-    placeholder: "",
-    desc: "campus videos and student life reels",
   },
   tools: {
     label: "AI Tools",
@@ -375,103 +348,6 @@ function DealsPanel() {
   );
 }
 
-function VideosPanel() {
-  const [filter, setFilter] = useState("all");
-  const categories = ["all", ...Array.from(new Set(VIDEOS.map((v) => v.category)))];
-  const filtered = filter === "all" ? VIDEOS : VIDEOS.filter((v) => v.category === filter);
-
-  return (
-    <div style={{ padding: 20, overflow: "auto", height: "100%" }}>
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-          <Play size={20} color="#e04040" />
-          <h2 style={{ fontSize: 20, fontWeight: 700 }}>student life videos</h2>
-        </div>
-        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 16, lineHeight: 1.5 }}>
-          click any video to watch it on YouTube.
-        </p>
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 }}>
-          {categories.map((c) => (
-            <button
-              key={c}
-              onClick={() => setFilter(c)}
-              style={{
-                padding: "5px 14px",
-                borderRadius: 20,
-                border: "none",
-                background: filter === c ? "#e04040" : "var(--bg-card)",
-                color: filter === c ? "white" : "var(--text-secondary)",
-                cursor: "pointer",
-                fontSize: 11,
-                fontWeight: 500,
-                transition: "all 0.15s",
-              }}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14 }}>
-          {filtered.map((video, i) => (
-            <a
-              key={i}
-              href={`https://www.youtube.com/watch?v=${video.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover-lift"
-              style={{
-                background: "var(--bg-card)",
-                border: "1px solid var(--border)",
-                borderRadius: 12,
-                overflow: "hidden",
-                textDecoration: "none",
-                color: "inherit",
-                display: "block",
-              }}
-            >
-              <div style={{ position: "relative", paddingTop: "56.25%", background: "#000" }}>
-                <img
-                  src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
-                  alt={video.title}
-                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
-                <div style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: 50,
-                  height: 50,
-                  borderRadius: "50%",
-                  background: "rgba(224, 64, 64, 0.9)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}>
-                  <Play size={20} color="white" fill="white" />
-                </div>
-              </div>
-              <div style={{ padding: "12px 14px" }}>
-                <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4, marginBottom: 6 }}>{video.title}</p>
-                <span style={{
-                  fontSize: 10,
-                  padding: "2px 8px",
-                  borderRadius: 10,
-                  background: "rgba(224, 64, 64, 0.1)",
-                  color: "#e04040",
-                  fontWeight: 500,
-                }}>
-                  {video.category}
-                </span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function OnboardingScreen({ onComplete }: { onComplete: (p: UserProfile) => void }) {
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
@@ -628,12 +504,12 @@ export default function NestMindApp() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [activeAgent, setActiveAgent] = useState<Agent>("buddy");
   const [messages, setMessages] = useState<Record<Agent, Message[]>>({
-    buddy: [], housing: [], food: [], campus: [], career: [], deals: [], videos: [], tools: [],
+    buddy: [], housing: [], food: [], campus: [], career: [], deals: [], tools: [],
   });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [metrics, setMetrics] = useState({ totalQueries: 0, avgResponse: 0, agentCalls: { buddy: 0, housing: 0, food: 0, campus: 0, career: 0, deals: 0, videos: 0, tools: 0 } });
+  const [metrics, setMetrics] = useState({ totalQueries: 0, avgResponse: 0, agentCalls: { buddy: 0, housing: 0, food: 0, campus: 0, career: 0, deals: 0, tools: 0 } });
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -658,7 +534,7 @@ export default function NestMindApp() {
   };
 
   const sendMessage = async () => {
-    const nonChatTabs: Agent[] = ["tools", "deals", "videos"];
+    const nonChatTabs: Agent[] = ["tools", "deals"];
     if (!input.trim() || loading || !profile || nonChatTabs.includes(activeAgent)) return;
     const userMsg: Message = { role: "user", content: input.trim() };
     const agent = activeAgent;
@@ -756,7 +632,7 @@ export default function NestMindApp() {
             const a = AGENTS[key];
             const Icon = a.icon;
             const isActive = activeAgent === key;
-            const isNonChat = key === "tools" || key === "deals" || key === "videos";
+            const isNonChat = key === "tools" || key === "deals";
             const msgCount = isNonChat ? 0 : messages[key].length;
             return (
               <button
@@ -834,7 +710,15 @@ export default function NestMindApp() {
             </p>
           </div>
           <button
-            onClick={() => { localStorage.removeItem("nestmind_profile_v3"); setProfile(null); trackAction("logout"); }}
+            onClick={() => {
+              localStorage.removeItem("nestmind_profile_v3");
+              setProfile(null);
+              setActiveAgent("buddy");
+              setMessages({ buddy: [], housing: [], food: [], campus: [], career: [], deals: [], tools: [] });
+              setMetrics({ totalQueries: 0, avgResponse: 0, agentCalls: { buddy: 0, housing: 0, food: 0, campus: 0, career: 0, deals: 0, tools: 0 } });
+              setInput("");
+              trackAction("logout");
+            }}
             style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: 10 }}
           >
             logout
@@ -875,8 +759,6 @@ export default function NestMindApp() {
           <ToolsPanel />
         ) : activeAgent === "deals" ? (
           <DealsPanel />
-        ) : activeAgent === "videos" ? (
-          <VideosPanel />
         ) : (
           <>
             <div style={{ flex: 1, overflow: "auto", padding: "20px 20px 0" }}>
