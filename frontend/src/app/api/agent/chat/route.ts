@@ -66,7 +66,7 @@ Question: "${query}"
 RULES:
 - Give SPECIFIC info about ${uni}'s area. Real apartment names, real neighborhoods, real streets if you know them.
 - Actual rent ranges for the ${uni} area.
-- CRITICAL: For EVERY apartment or location you mention, include a Google Maps link so the student can view it. Format: https://www.google.com/maps/search/APARTMENT+NAME+NEAR+${encodeURIComponent(uni)} - replace spaces with +. This is mandatory for every location.
+- CRITICAL: For EVERY apartment or location you mention, include a Google Maps link. ALWAYS use this exact format: https://www.google.com/maps/search/APARTMENT+NAME+NEAR+${encodeURIComponent(uni)} (replace spaces with +). NEVER use goo.gl links or shortened URLs. NEVER use maps.app.goo.gl. Only use the full https://www.google.com/maps/search/ format. This is mandatory.
 - Where to search: Zillow (https://www.zillow.com), Apartments.com (https://www.apartments.com), Facebook Marketplace, Facebook groups "${uni} housing" and "${uni} off-campus housing", Craigslist (with caution).
 - Scam warnings: never wire money before seeing a place, verify the landlord owns the property, if it's too cheap it's fake.
 - International student specific: no US credit history workaround (offer larger deposit, get a co-signer service like Leap or TheGuarantors https://www.theguarantors.com), bring bank statements showing funds.

@@ -28,27 +28,26 @@ const STUDENT_DEALS = [
   { name: "Grammarly Premium", price: "FREE", desc: "writing assistant for essays and emails", url: "https://www.grammarly.com/edu", tag: "productivity", free: true },
 ];
 
-function getVideos(uni: string) {
-  return [
-    { title: `${uni} Campus Tour`, query: `${uni} campus tour`, category: "campus life" },
-    { title: `Day in Life at ${uni}`, query: `${uni} day in my life student vlog`, category: "campus life" },
-    { title: `${uni} Dorm Tour`, query: `${uni} dorm room tour`, category: "campus life" },
-    { title: `${uni} Student Life`, query: `${uni} student life experience`, category: "campus life" },
-    { title: `How to Get SSN on F1 Visa`, query: `how to get SSN F1 visa international student`, category: "visa" },
-    { title: `OPT Application Step by Step`, query: `OPT application guide F1 student`, category: "visa" },
-    { title: `CPT vs OPT Explained`, query: `CPT vs OPT explained F1 visa`, category: "visa" },
-    { title: `F1 Visa Interview Tips`, query: `F1 visa interview tips and questions`, category: "visa" },
-    { title: `Food Near ${uni}`, query: `${uni} food restaurants where to eat`, category: "food" },
-    { title: `Cheap Eats for Students`, query: `cheap food college student budget meals`, category: "food" },
-    { title: `Meal Prep on a Budget`, query: `meal prep international student budget`, category: "food" },
-    { title: `Grocery Shopping in USA`, query: `grocery shopping tips international student USA`, category: "food" },
-    { title: `Housing Near ${uni}`, query: `${uni} off campus housing apartments`, category: "housing" },
-    { title: `${uni} Apartment Hunt`, query: `${uni} apartment tour student`, category: "housing" },
-    { title: `Open Bank Account in USA`, query: `open bank account international student USA`, category: "daily life" },
-    { title: `Best Phone Plans for Students`, query: `best phone plan international student USA`, category: "daily life" },
-    { title: `Build Credit in USA`, query: `build credit score international student USA`, category: "daily life" },
-  ];
-}
+const VIDEOS = [
+  { title: "How to Get SSN as International Student", id: "TwUDJECDFJU", category: "visa" },
+  { title: "SSN for F1 Visa Students Explained", id: "yY8NyRbhiY0", category: "visa" },
+  { title: "How to Apply for OPT - Complete Guide", id: "Dy961IIi1kc", category: "visa" },
+  { title: "OPT for F1 Students Explained", id: "b_cGBSjcHJY", category: "visa" },
+  { title: "How to Apply for OPT Online Step by Step", id: "CmboasUaVRc", category: "visa" },
+  { title: "F1 Visa Interview Tips", id: "saSX27CLzpw", category: "visa" },
+  { title: "Meal Prep on a Student Budget", id: "9g6J18BcGW0", category: "food" },
+  { title: "Easy Meals Any College Student Can Make", id: "S-TmmjEN-V0", category: "food" },
+  { title: "Budget Meals and Hacks for Students", id: "NmdfaVCExcM", category: "food" },
+  { title: "Budget Friendly Meal Prep", id: "p3vUmv2IygA", category: "food" },
+  { title: "How to Find an Apartment in USA", id: "cGr6CPB7OUA", category: "housing" },
+  { title: "How to Rent as International Student", id: "z1rP5vTkdbA", category: "housing" },
+  { title: "Watch This Before Finding Housing in USA", id: "h-btuCBjShw", category: "housing" },
+  { title: "My USA Apartment Tour as Intl Student", id: "GqMMNEVI0ZU", category: "housing" },
+  { title: "Open US Bank Account (F1/J1 Visa)", id: "-PbzLN-D_9c", category: "daily life" },
+  { title: "How to Open Bank Account in USA", id: "Y3y-ToVPlL0", category: "daily life" },
+  { title: "Best Phone Plans for Intl Students", id: "N5FYrzsOoJY", category: "daily life" },
+  { title: "Build Credit as International Student", id: "52wK0hkClGY", category: "daily life" },
+];
 
 const AGENTS: Record<Agent, { label: string; icon: typeof MessageCircle; color: string; placeholder: string; desc: string }> = {
   buddy: {
@@ -376,21 +375,20 @@ function DealsPanel() {
   );
 }
 
-function VideosPanel({ university }: { university: string }) {
+function VideosPanel() {
   const [filter, setFilter] = useState("all");
-  const allVideos = getVideos(university);
-  const categories = ["all", ...Array.from(new Set(allVideos.map((v) => v.category)))];
-  const filtered = filter === "all" ? allVideos : allVideos.filter((v) => v.category === filter);
+  const categories = ["all", ...Array.from(new Set(VIDEOS.map((v) => v.category)))];
+  const filtered = filter === "all" ? VIDEOS : VIDEOS.filter((v) => v.category === filter);
 
   return (
     <div style={{ padding: 20, overflow: "auto", height: "100%" }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
           <Play size={20} color="#e04040" />
-          <h2 style={{ fontSize: 20, fontWeight: 700 }}>{university} reels and videos</h2>
+          <h2 style={{ fontSize: 20, fontWeight: 700 }}>student life videos</h2>
         </div>
         <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 16, lineHeight: 1.5 }}>
-          click any card to find the best videos about your university on YouTube.
+          click any video to watch it on YouTube.
         </p>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 }}>
           {categories.map((c) => (
@@ -417,7 +415,7 @@ function VideosPanel({ university }: { university: string }) {
           {filtered.map((video, i) => (
             <a
               key={i}
-              href={`https://www.youtube.com/results?search_query=${encodeURIComponent(video.query)}`}
+              href={`https://www.youtube.com/watch?v=${video.id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover-lift"
@@ -431,11 +429,12 @@ function VideosPanel({ university }: { university: string }) {
                 display: "block",
               }}
             >
-              <div style={{
-                paddingTop: "50%",
-                background: "linear-gradient(135deg, #e04040 0%, #c0392b 100%)",
-                position: "relative",
-              }}>
+              <div style={{ position: "relative", paddingTop: "56.25%", background: "#000" }}>
+                <img
+                  src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+                  alt={video.title}
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                />
                 <div style={{
                   position: "absolute",
                   top: "50%",
@@ -444,26 +443,13 @@ function VideosPanel({ university }: { university: string }) {
                   width: 50,
                   height: 50,
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.2)",
+                  background: "rgba(224, 64, 64, 0.9)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}>
-                  <Play size={22} color="white" fill="white" />
+                  <Play size={20} color="white" fill="white" />
                 </div>
-                <span style={{
-                  position: "absolute",
-                  bottom: 8,
-                  right: 10,
-                  fontSize: 9,
-                  padding: "2px 8px",
-                  borderRadius: 8,
-                  background: "rgba(0,0,0,0.4)",
-                  color: "white",
-                  fontWeight: 500,
-                }}>
-                  YouTube
-                </span>
               </div>
               <div style={{ padding: "12px 14px" }}>
                 <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4, marginBottom: 6 }}>{video.title}</p>
@@ -890,7 +876,7 @@ export default function NestMindApp() {
         ) : activeAgent === "deals" ? (
           <DealsPanel />
         ) : activeAgent === "videos" ? (
-          <VideosPanel university={profile.university} />
+          <VideosPanel />
         ) : (
           <>
             <div style={{ flex: 1, overflow: "auto", padding: "20px 20px 0" }}>
