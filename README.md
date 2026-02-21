@@ -145,3 +145,4 @@ Hosted on Netlify. The Next.js app is built and deployed as static assets + serv
 cd frontend
 npx netlify-cli deploy --prod
 ```
+## Deployment link: https://nestmind-ai.netlify.app/
